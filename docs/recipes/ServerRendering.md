@@ -24,20 +24,15 @@ In the following recipe, we are going to look at how to set up server-side rende
 
 ### Install Packages
 
-For this example, we’ll be using [Express](http://expressjs.com/) as a simple web server. We’ll include the [serve-static](https://www.npmjs.com/package/serve-static) middleware to handle static files, which we’ll see in just a bit.
-
-We also need to install the React bindings for Redux, since they are not included in Redux by default.
+For this example, we’ll be using [Express](http://expressjs.com/) as a simple web server. We also need to install the React bindings for Redux, since they are not included in Redux by default.
 
 ```
-npm install --save express serve-static react-redux
+npm install --save express react-redux
 ```
 
 ## The Server Side
 
-The following is the outline for what our server side is going to look like. We are going to set up an [Express middleware](http://expressjs.com/guide/using-middleware.html) using [app.use](http://expressjs.com/api.html#app.use) to handle all requests that come in to our server. We do the same with the `serve-static` middleware to be able to serve up our client javascript bundle. If you’re unfamiliar with Express or middleware, just know that our handleRender function will be called every time the server receives a request.
-
->##### Note on Production Usage
->In production, it’s better to serve static files using a server like nginx, and only use Node for handling application requests. However, this is out of scope of this tutorial.
+The following is the outline for what our server side is going to look like. We are going to set up an [Express middleware](http://expressjs.com/guide/using-middleware.html) using [app.use](http://expressjs.com/api.html#app.use) to handle all requests that come in to our server. If you’re unfamiliar with Express or middleware, just know that our handleRender function will be called every time the server receives a request.
 
 ##### `server.js`
 
@@ -53,9 +48,6 @@ import App from './containers/App';
 const app = Express();
 const port = 3000;
 
-// Use this middleware to serve up static files built into the dist directory
-app.use(require('serve-static')(path.join(__dirname, 'dist')));
-
 // This is fired every time the server side receives a request
 app.use(handleRender);
 
@@ -70,7 +62,7 @@ app.listen(port);
 
 The first thing that we need to do on every request is create a new Redux store instance. The only purpose of this store instance is to provide the initial state of our application.
 
-When rendering, we will wrap `<App />`, our root component, inside a `<Provider>` to make the store available to all components in the component tree, as we saw in [Usage with React](/docs/basics/UsageWithReact.html).
+When rendering, we will wrap `<App />`, our root component, inside a `<Provider>` to make the store available to all components in the component tree, as we saw in [Usage with React](../basics/UsageWithReact.md).
 
 The key step in server side rendering is to render the initial HTML of our component _**before**_ we send it to the client side. To do this, we use [React.renderToString()](https://facebook.github.io/react/docs/top-level-api.html#react.rendertostring).
 
@@ -102,7 +94,7 @@ The final step on the server side is to inject our initial component HTML and in
 
 The `initialState` will then be available on the client side by accessing `window.__INITIAL_STATE__`.
 
-We also include our bundle file for the client-side application via a script tag. The `serve-static` middleware included above will serve up this file. We’ll see what that file contains in just a bit.
+We also include our bundle file for the client-side application via a script tag. This is whatever output your bundling tool provides for your client entry point. It may be a static file or a URL to a hot reloading development server.
 
 ```js
 function renderFullPage(html, initialState) {
@@ -117,7 +109,7 @@ function renderFullPage(html, initialState) {
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
         </script>
-        <script src="/bundle.js"></script>
+        <script src="/static/bundle.js"></script>
       </body>
     </html>
     `;
@@ -283,6 +275,6 @@ Furthermore, you can add additional layers of security by sanitizing your state 
 
 ## Next Steps
 
-You may want to read [Async Actions](../advanced/AsyncActions.md) to learn more about expressing asynchronous flow in Redux with async primitives such Promises and thunks. Keep in mind that anything you learn there can also be applied to universal rendering.
+You may want to read [Async Actions](../advanced/AsyncActions.md) to learn more about expressing asynchronous flow in Redux with async primitives such as Promises and thunks. Keep in mind that anything you learn there can also be applied to universal rendering.
 
 If you use something like [React Router](https://github.com/rackt/react-router), you might also want to express your data fetching dependencies as static `fetchData()` methods on your route handler components. They may return [async actions](../advanced/AsyncActions.md), so that your `handleRender` function can match the route to the route handler component classes, dispatch `fetchData()` result for each of them, and render only after the Promises have resolved. This way the specific API calls required for different routes are colocated with the route handler component definitions. You can also use the same technique on the client side to prevent the router from switching the page until its data has been loaded.

@@ -1,7 +1,7 @@
 {
-  "name": "redux-async-example",
+  "name": "redux-todos-with-undo-example",
   "version": "0.0.0",
-  "description": "Redux async example",
+  "description": "Redux todos with undo example",
   "scripts": {
     "start": "node server.js"
   },
@@ -9,29 +9,17 @@
     "type": "git",
     "url": "https://github.com/rackt/redux.git"
   },
-  "keywords": [
-    "react",
-    "reactjs",
-    "hot",
-    "reload",
-    "hmr",
-    "live",
-    "edit",
-    "webpack",
-    "flux"
-  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/rackt/redux/issues"
   },
   "homepage": "http://rackt.github.io/redux",
   "dependencies": {
-    "isomorphic-fetch": "^2.1.1",
     "react": "^0.13.3",
     "react-redux": "^2.1.2",
     "redux": "^3.0.0",
-    "redux-logger": "0.0.3",
-    "redux-thunk": "^0.1.0"
+    "redux-thunk": "^0.1.0",
+    "redux-undo": "^0.4.1"
   },
   "devDependencies": {
     "babel-core": "^5.6.18",
