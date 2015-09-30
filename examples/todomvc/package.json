@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node server.js",
     "test": "NODE_ENV=test mocha --recursive --compilers js:babel-core/register",
-    "test:watch": "npm test -- --watch"
+    "test:watch": "npm test -- --watch",
+    "electron": "node_modules/.bin/electron electron-main.js"
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,10 @@
   },
   "homepage": "http://rackt.github.io/redux",
   "dependencies": {
+    "babel": "^5.8.23",
     "classnames": "^2.1.2",
+    "electron-prebuilt": "^0.33.1",
+    "electron-safe-ipc": "^0.6.1",
     "react": "^0.13.3",
     "react-redux": "^2.1.2",
     "redux": "^3.0.0"

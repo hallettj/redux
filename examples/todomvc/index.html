@@ -1,11 +1,28 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self';
+        connect-src 'self' electron-safe-ipc:;
+        script-src 'sha256-6c41Jw0Xdf9PUjXs5g-U1D-K7XLDOarVMSEGGduJipo=';
+        style-src 'self' 'unsafe-inline' http://fonts.googleapis.com;
+        img-src 'self' data:;
+        child-src 'self' data:;
+        font-src 'self' http://fonts.gstatic.com;
+        media-src *;
+        form-action 'none';
+        " />
     <title>Redux TodoMVC example</title>
+    <link rel="stylesheet" href="node_modules/todomvc-app-css/index.css"/>
   </head>
   <body>
     <div class="todoapp" id="root">
     </div>
-    <script src="/static/bundle.js"></script>
+    <script>
+      require('babel/register')
+      require('./index')
+    </script>
   </body>
 </html>
